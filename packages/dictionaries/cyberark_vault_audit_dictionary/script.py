@@ -111,7 +111,7 @@ def dictionary(event):
             out["destination_hostname"] = dst
 
     out["applicationname"] = event.get("app")
-    out["event.reason"] = event.get("reason")
+    out["event_reason"] = event.get("reason")
     out["request_id"] = None
     out["ticket_id"] = None
 
