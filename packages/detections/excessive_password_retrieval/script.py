@@ -14,6 +14,9 @@ def init(event):
     """
     Use appropriate ueba method
     """
+    """
+    Use appropriate ueba method
+    """
     #Define teh ueba methdo and ist attributes
     return "initialization completed"
 
@@ -35,6 +38,11 @@ def notify():
 
 def algorithm(event):
 
+    key = application.get("excessive_password_retrieval")
+
+    if key is True:
+        return 0.0
+
     action = (event.get("event_action") or "").strip().lower()
 
     if action != "retrieve password":
@@ -42,14 +50,14 @@ def algorithm(event):
 
     if stats.count("password_retrievals") >= PASSWORD_RETRIEVAL_THRESHOLD:
         stats.resetcount("password_retrievals")
-        return 0.75
+        lock_acquired = application.putifabsent("excessive_password_retrieval", True, 86400)
+        if lock_acquired:
+            return 0.75
 
     return 0.0
 
 
 def clusters(event):
-
-
 
     return session.get("clusters")
 
